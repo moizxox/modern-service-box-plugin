@@ -7,6 +7,7 @@
   z-index: 5;
   overflow: hidden;
 }
+
 .serv-main-box::after {
   content: "";
   background-color: #32f9e2;
@@ -17,9 +18,11 @@
   transition: width 1s;
   z-index: 2;
 }
+
 .serv-main-box:hover::after {
   width: 100%;
 }
+
 .serv-main-box::before {
   content: "";
   background-color: #0000001a;
@@ -30,43 +33,64 @@
   transition: width 1s;
   z-index: 1;
 }
+
 .serv-box-wrappeer {
   padding: 30px;
 }
+
 img.simple-img {
   width: 80px;
   display: block;
   height: 80px;
   object-fit: contain;
 }
+
 img.anim-img {
   width: 80px;
   object-fit: contain;
   height: 80px;
   display: none;
 }
+
+.serv-box-content h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  /* Default color for simple color */
+}
+
+.heading-gradient {
+  background-clip: text; /* Ensure background clipping works */
+  color: transparent; /* Make text color transparent */
+  background-size: cover; /* Ensure the background covers the text */
+}
+
+.heading-simple {
+  /* Simple color will be applied via Elementor controls */
+}
+
 .serv-main-box:hover img.simple-img {
   display: none;
 }
+
 .serv-main-box:hover img.anim-img {
   display: block;
 }
+
 .serv-box-content h3 {
-  background: linear-gradient(180deg, #32f9e2 19.03%, #00cbbc 56.35%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  /* Removed gradient styles */
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 10px;
 }
+
 @media screen and (max-width: 800px) {
   .serv-box-wrappeer {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   .serv-box-wrappeer h3,
   .serv-box-wrappeer p {
     text-align: center;

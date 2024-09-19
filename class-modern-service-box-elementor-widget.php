@@ -80,17 +80,50 @@ class Modern_Service_Box_Elementor_Widget extends \Elementor\Widget_Base {
             ]
         );
 
+        // Color Type: Simple or Gradient
         $this->add_control(
-            'heading_color',
+            'heading_color_type',
             [
-                'label' => __( 'Color', 'modern-service-box' ),
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .serv-box-content h3' => 'color: {{VALUE}}',
+                'label' => __( 'Heading Color Type', 'modern-service-box' ),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'gradient',
+                'options' => [
+                    'simple' => __( 'Simple Color', 'modern-service-box' ),
+                    'gradient' => __( 'Gradient', 'modern-service-box' ),
                 ],
             ]
         );
 
+        // Simple Color Option
+        $this->add_control(
+            'heading_simple_color',
+            [
+                'label' => __( 'Simple Color', 'modern-service-box' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'condition' => [
+                    'heading_color_type' => 'simple',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .serv-box-content .heading-simple' => 'color: {{VALUE}}',
+                ],
+            ]
+        );
+
+        // Custom Gradient CSS
+        $this->add_control(
+            'heading_gradient_css',
+            [
+                'label' => __( 'Custom Gradient CSS', 'modern-service-box' ),
+                'type' => \Elementor\Controls_Manager::TEXTAREA,
+                'default' => 'linear-gradient(180deg, #32f9e2 19.03%, #00cbbc 56.35%)',
+                'condition' => [
+                    'heading_color_type' => 'gradient',
+                ],
+                'placeholder' => 'Enter your gradient CSS here',
+            ]
+        );
+
+        // Typography Option
         $this->add_group_control(
             \Elementor\Group_Control_Typography::get_type(),
             [
@@ -220,17 +253,32 @@ class Modern_Service_Box_Elementor_Widget extends \Elementor\Widget_Base {
         <div class="serv-main-box">
             <div class="serv-box-wrappeer">
                 <div class="img-serv-wrapper">
-                    <img src="<?php echo $settings['animated_image']['url']; ?>" alt="" class="anim-img">
-                    <img src="<?php echo $settings['simple_image']['url']; ?>" alt="" class="simple-img">
+                    <img src="<?php echo esc_url($settings['animated_image']['url']); ?>" alt="" class="anim-img">
+                    <img src="<?php echo esc_url($settings['simple_image']['url']); ?>" alt="" class="simple-img">
                 </div>
                 <div class="serv-box-content">
-                    <h3><?php echo $settings['heading_text']; ?></h3>
-                    <p><?php echo $settings['description_text']; ?></p>
+                    <h3 class="<?php echo $settings['heading_color_type'] === 'gradient' ? 'heading-gradient' : 'heading-simple'; ?>" 
+                        style="<?php echo $settings['heading_color_type'] === 'gradient' ? '-webkit-background-clip: text; background: '.$settings['heading_gradient_css'].'; -webkit-text-fill-color: transparent;' : ''; ?>">
+                        <?php echo esc_html($settings['heading_text']); ?>
+                    </h3>
+                    <p><?php echo esc_html($settings['description_text']); ?></p>
                 </div>
             </div>
         </div>
 
+        <style>
+            .heading-gradient {
+                background-clip: text;
+                color: transparent; /* Ensure color is transparent for gradient */
+            }
+            .heading-simple {
+                /* Simple color will be applied via Elementor controls */
+            }
+        </style>
+
         <?php
     }
-
 }
+
+// Register the widget
+\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Modern_Service_Box_Elementor_Widget() );
